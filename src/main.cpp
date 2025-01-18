@@ -15,12 +15,19 @@ const int CLOCK_PIN = A2;  // 74HC595 pin 11
 uint8_t gameSequence[MAX_GAME_LENGTH] = {0};
 uint8_t gameIndex = 0;
 
+
+#include <LiquidCrystal_I2C.h>
+
+LiquidCrystal_I2C lcd(0x27,20,4);  // set the LCD address to 0x27 for a 16 chars and 2 line display
+
+
 /**
    Set up the Arduino board and initialize Serial communication
 */
 void setup() {
   Serial.begin(9600);
-
+  lcd.init();                      // initialize the lcd 
+  lcd.backlight();
   // Initialize LEDs and buttons
   for (byte i = 0; i < 4; i++) {
     pinMode(ledPins[i], OUTPUT);
@@ -110,7 +117,14 @@ byte readButtons() {
   Play the game over sequence, and report the game score
 */
 void gameOver() {
+  lcd.clear();
   Serial.print("Game over! Your score: ");
+  lcd.setCursor(0, 0);   // Set cursor to the first row
+  lcd.print("Game Over!"); // Print "Game Over!"
+  
+  lcd.setCursor(0, 1);   // Set cursor to the second row
+  uint8_t score = gameIndex - 1;
+  lcd.print("Score: " + String(score));
   Serial.println(gameIndex - 1);
   gameIndex = 0;
 
@@ -140,7 +154,16 @@ bool checkUserSequence() {
 */
 void loop() {
   displayScore();
-
+  lcd.clear();
+  lcd.setCursor(0, 0); 
+  if (gameIndex == 0) {
+    lcd.print("Simon Says Game");
+  }
+  else {
+    lcd.print("Good Job!");
+    lcd.setCursor(0, 1);
+    lcd.print("Level: " + String(gameIndex));
+  }
   // Add a random color to the end of the sequence
   gameSequence[gameIndex] = random(0, 4);
   gameIndex++;

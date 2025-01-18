@@ -61,7 +61,13 @@
         "left": 200,
         "attrs": { "color": "yellow", "key": "4", "label": "4" }
       },
-      { "type": "wokwi-lcd1602", "id": "lcd1", "top": 22.63, "left": 342.4, "attrs": {} }
+      {
+        "type": "wokwi-lcd1602",
+        "id": "lcd1",
+        "top": 208,
+        "left": 389.6,
+        "attrs": { "pins": "i2c" }
+      }
     ],
     "connections": [
       [ "uno:GND.1", "buzzer:1", "black", [ "v-12", "*", "h0" ] ],
@@ -81,11 +87,11 @@
       [ "uno:GND.1", "led-green:C", "black", [ "v-12", "*", "h-8", "v4" ] ],
       [ "uno:12", "led-red:A", "red", [ "v-16", "*", "h6" ] ],
       [ "uno:GND.1", "led-red:C", "black", [ "v-12", "*", "h-8", "v4" ] ],
-      [ "lcd1:K", "uno:GND.1", "green", [ "v76.8", "h-384.3" ] ],
-      [ "lcd1:VSS", "uno:GND.1", "green", [ "v76.8", "h-240.3" ] ],
-      [ "lcd1:RW", "uno:GND.1", "green", [ "v76.8", "h-278.8" ] ],
       [ "buzzer:2", "uno:7", "green", [ "v86.4", "h44" ] ],
-      [ "lcd1:RS", "uno:8", "green", [ "v67.2", "h-211.3" ] ]
+      [ "lcd1:GND", "uno:GND.1", "black", [ "h0" ] ],
+      [ "lcd1:VCC", "uno:5V", "red", [ "h0" ] ],
+      [ "lcd1:SDA", "uno:A4", "green", [ "h0" ] ],
+      [ "lcd1:SCL", "uno:A5", "green", [ "h0" ] ]
     ],
     "dependencies": {}
   }
