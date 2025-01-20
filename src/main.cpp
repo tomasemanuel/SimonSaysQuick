@@ -130,7 +130,7 @@ void gameOver() {
 
   // Display "Game Over" pattern on 7-segment display
   sendScore(DASH, DASH);
-  delay(1000);
+  delay(4000);
 }
 
 /**
