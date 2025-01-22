@@ -18,7 +18,7 @@ uint8_t gameIndex = 0;
 
 #include <LiquidCrystal_I2C.h>
 
-LiquidCrystal_I2C lcd(0x27,20,4);  // set the LCD address to 0x27 for a 16 chars and 2 line display
+LiquidCrystal_I2C lcd(0x27,20,4); 
 
 
 /**
@@ -26,20 +26,16 @@ LiquidCrystal_I2C lcd(0x27,20,4);  // set the LCD address to 0x27 for a 16 chars
 */
 void setup() {
   Serial.begin(9600);
-  lcd.init();                      // initialize the lcd 
-  lcd.backlight();
-  // Initialize LEDs and buttons
+  lcd.init();                 
+  lcd.backlight();\
   for (byte i = 0; i < 4; i++) {
     pinMode(ledPins[i], OUTPUT);
     pinMode(buttonPins[i], INPUT_PULLUP);
   }
 
-  // Initialize 7-segment display pins
   pinMode(LATCH_PIN, OUTPUT);
   pinMode(CLOCK_PIN, OUTPUT);
   pinMode(DATA_PIN, OUTPUT);
-
-  // Prime the random number generator using a floating analog pin
   randomSeed(analogRead(A3));
 
   Serial.println("Simon Says Game Initialized");
@@ -119,16 +115,15 @@ byte readButtons() {
 void gameOver() {
   lcd.clear();
   Serial.print("Game over! Your score: ");
-  lcd.setCursor(0, 0);   // Set cursor to the first row
-  lcd.print("Game Over!"); // Print "Game Over!"
+  lcd.setCursor(0, 0);  
+  lcd.print("Game Over!");
   
-  lcd.setCursor(0, 1);   // Set cursor to the second row
+  lcd.setCursor(0, 1);  
   uint8_t score = gameIndex - 1;
   lcd.print("Score: " + String(score));
   Serial.println(gameIndex - 1);
   gameIndex = 0;
-
-  // Display "Game Over" pattern on 7-segment display
+  delay(8000);
   sendScore(DASH, DASH);
   delay(4000);
 }
@@ -140,7 +135,7 @@ bool checkUserSequence() {
   for (int i = 0; i < gameIndex; i++) {
     byte expectedButton = gameSequence[i];
     byte actualButton = readButtons();
-    lightLed(actualButton);  // Flash the button the user pressed
+    lightLed(actualButton); 
     if (expectedButton != actualButton) {
       return false;
     }
@@ -164,7 +159,6 @@ void loop() {
     lcd.setCursor(0, 1);
     lcd.print("Level: " + String(gameIndex));
   }
-  // Add a random color to the end of the sequence
   gameSequence[gameIndex] = random(0, 4);
   gameIndex++;
   if (gameIndex >= MAX_GAME_LENGTH) {
@@ -177,5 +171,5 @@ void loop() {
     return;
   }
 
-  delay(500);  // Small delay before the next level
+  delay(500);  
 }
